@@ -61,7 +61,7 @@ export default function IntroScene({ onComplete }) {
       </video>
       <div ref={vignetteRef} className={styles.vignette} />
       <div ref={textRef} className={styles.topText}>
-        HAPPY BIRTHDAY TO YOU, NGƯỜI BẠN THÂN CỦA TUI!
+        HAPPY BIRTHDAY TO YOU
       </div>
     </div>
   )

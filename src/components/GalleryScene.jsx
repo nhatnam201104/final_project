@@ -5,17 +5,17 @@ import styles from '../styles/GalleryScene.module.css'
 const MEMORIES = [
   {
     image: '/images/kiniem1.jpg',
-    story: 'Ngày đầu tiên gặp nhau, ai ngờ sau này lại thành người bạn thân nhất của nhau...',
+    story: 'Lần đầu Mai Duyên nấu ăn cho tôiii',
     effects: ['sparkle'],
   },
   {
     image: '/images/kiniem2.jpg',
-    story: 'Những buổi chiều cà phê, những cuộc nói chuyện không bao giờ hết...',
+    story: 'Quà sinh nhật Mai Duyên tặng tôii',
     effects: ['bokeh'],
   },
   {
     image: '/images/kiniem3.jpg',
-    story: 'Cùng nhau chia sẻ cả niềm vui lẫn nỗi buồn, đó mới là điều quý giá nhất...',
+    story: 'Quà giáng sinh của Mai Duyên',
     effects: ['sparkle'],
   },
   {
@@ -25,20 +25,16 @@ const MEMORIES = [
   },
 ]
 
-const AUTO_ADVANCE_DELAY = 4000
+const AUTO_ADVANCE_DELAY = 5000
 
 export default function GalleryScene({ onComplete }) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [showText, setShowText] = useState(false)
   const containerRef = useRef(null)
-  const imageWrapRef = useRef(null)
-  const textRef = useRef(null)
+  const cardRef = useRef(null)
   const canvasRef = useRef(null)
-  const navRef = useRef(null)
-  const autoTimerRef = useRef(null)
   const canvasRaf = useRef(null)
-  const isTransitioning = useRef(false)
-  const goToCardRef = useRef(null)
+  const autoTimerRef = useRef(null)
+  const progressRef = useRef(null)
 
   const drawBokeh = useCallback((ctx, width, height) => {
     for (let i = 0; i < 15; i++) {
@@ -109,148 +105,86 @@ export default function GalleryScene({ onComplete }) {
 
   const clearAutoTimer = useCallback(() => {
     if (autoTimerRef.current) {
-      clearTimeout(autoTimerRef.current)
+      clearInterval(autoTimerRef.current)
       autoTimerRef.current = null
     }
   }, [])
 
-  // Smooth transition animation using cubic-bezier easing
-  const goToCard = useCallback((newIndex) => {
-    if (isTransitioning.current) return
-    if (newIndex < 0 || newIndex >= MEMORIES.length) return
+  const goToNext = useCallback(() => {
+    const card = cardRef.current
+    const progress = progressRef.current
     
-    isTransitioning.current = true
+    if (currentIndex >= MEMORIES.length - 1) {
+      if (onComplete) onComplete()
+      return
+    }
+
     clearAutoTimer()
 
-    const imageWrap = imageWrapRef.current
-    const text = textRef.current
-
-    // Smooth fade out with elegant easing
-    gsap.to(imageWrap, {
-      opacity: 0,
-      scale: 1.05,
-      duration: 0.5,
-      ease: 'power3.in',
-    })
-    
-    if (text) {
-      gsap.to(text, { 
-        opacity: 0, 
-        duration: 0.3,
-        ease: 'power2.out' 
-      })
+    // Reset progress bar
+    if (progress) {
+      gsap.set(progress, { scaleX: 0, transformOrigin: 'left center' })
     }
 
-    // After fade out, update and fade in with smooth animation
-    setTimeout(() => {
-      stopCanvas()
-      setCurrentIndex(newIndex)
-      setShowText(false)
-      
-      // Reset and smooth fade in
-      gsap.set(imageWrap, { scale: 0.95 })
-      gsap.to(imageWrap, { 
-        opacity: 1, 
-        scale: 1, 
-        duration: 0.6, 
-        ease: 'power3.out' 
-      })
-      
-      // Start canvas effect
-      runCanvasEffect(MEMORIES[newIndex])
-      
-      // Smooth text fade in (no y translation)
-      if (text) {
-        gsap.set(text, { opacity: 0 })
-        gsap.to(text, { 
-          opacity: 1, 
-          duration: 0.5, 
-          delay: 0.25, 
-          ease: 'power2.out' 
+    // Flip out animation
+    gsap.to(card, {
+      rotateY: 90,
+      scale: 0.95,
+      opacity: 0,
+      duration: 0.5,
+      ease: 'power2.in',
+      onComplete: () => {
+        setCurrentIndex(prev => prev + 1)
+        
+        // Reset card position
+        gsap.set(card, { rotateY: -90, scale: 0.95, opacity: 0 })
+        
+        // Flip in animation
+        gsap.to(card, {
+          rotateY: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out'
         })
       }
-
-      // After animation completes, set showText and schedule next or complete
-      setTimeout(() => {
-        setShowText(true)
-        isTransitioning.current = false
-        
-        if (newIndex < MEMORIES.length - 1) {
-          autoTimerRef.current = setTimeout(() => {
-            if (goToCardRef.current) {
-              goToCardRef.current(newIndex + 1)
-            }
-          }, AUTO_ADVANCE_DELAY)
-        } else {
-          setTimeout(() => {
-            if (onComplete) onComplete()
-          }, AUTO_ADVANCE_DELAY)
-        }
-      }, 500)
-    }, 450)
-  }, [clearAutoTimer, stopCanvas, runCanvasEffect, onComplete])
-
-  useEffect(() => {
-    goToCardRef.current = goToCard
-  }, [goToCard])
-
-  const handleCardClick = useCallback(() => {
-    if (isTransitioning.current) return
-    const next = currentIndex + 1
-    if (next < MEMORIES.length) {
-      goToCard(next)
-    } else {
-      if (onComplete) onComplete()
-    }
-  }, [currentIndex, goToCard, onComplete])
-
-  const handleNavClick = useCallback((index) => {
-    if (index !== currentIndex && !isTransitioning.current) {
-      goToCard(index)
-    }
-  }, [currentIndex, goToCard])
+    })
+  }, [currentIndex, onComplete, clearAutoTimer])
 
   useEffect(() => {
     const container = containerRef.current
-    const imageWrap = imageWrapRef.current
-    const nav = navRef.current
-
-    // Elegant fade in
+    const progress = progressRef.current
+    
     gsap.set(container, { opacity: 0 })
-    gsap.to(container, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-
-    // Smooth image entrance
-    gsap.set(imageWrap, { scale: 0.9, opacity: 0 })
-    gsap.to(imageWrap, { 
-      scale: 1, 
-      opacity: 1, 
-      duration: 0.8, 
-      delay: 0.2, 
-      ease: 'power3.out' 
-    })
-
-    // Start canvas effect
-    runCanvasEffect(MEMORIES[0])
-
-    // Smooth nav fade in
-    gsap.set(nav, { opacity: 0 })
-    gsap.to(nav, { opacity: 1, duration: 0.5, delay: 0.6, ease: 'power2.out' })
-
-    // Show text and start auto-advance
-    setTimeout(() => {
-      setShowText(true)
-      autoTimerRef.current = setTimeout(() => {
-        if (goToCardRef.current) {
-          goToCardRef.current(1)
-        }
-      }, AUTO_ADVANCE_DELAY)
-    }, 1400)
-
+    gsap.to(container, { opacity: 1, duration: 0.5 })
+    
+    runCanvasEffect(MEMORIES[currentIndex])
+    
+    // Start progress bar animation
+    if (progress) {
+      gsap.set(progress, { scaleX: 0, transformOrigin: 'left center' })
+      gsap.to(progress, { 
+        scaleX: 1, 
+        duration: AUTO_ADVANCE_DELAY / 1000,
+        ease: 'none'
+      })
+    }
+    
+    // Auto advance timer
+    autoTimerRef.current = setInterval(() => {
+      goToNext()
+    }, AUTO_ADVANCE_DELAY)
+    
     return () => {
       stopCanvas()
       clearAutoTimer()
     }
-  }, [runCanvasEffect, stopCanvas, clearAutoTimer])
+  }, [currentIndex, runCanvasEffect, stopCanvas, clearAutoTimer, goToNext])
+
+  const handleCardClick = useCallback(() => {
+    clearAutoTimer()
+    goToNext()
+  }, [goToNext, clearAutoTimer])
 
   const currentMemory = MEMORIES[currentIndex]
 
@@ -258,32 +192,37 @@ export default function GalleryScene({ onComplete }) {
     <div ref={containerRef} className={styles.scene}>
       <canvas ref={canvasRef} className={styles.canvas} />
       
+      <div className={styles.progressContainer}>
+        <div ref={progressRef} className={styles.progressBar} />
+      </div>
+      
+      <div className={styles.counter}>
+        {currentIndex + 1} / {MEMORIES.length}
+      </div>
+      
       <div 
-        ref={imageWrapRef} 
-        className={styles.imageWrap}
+        ref={cardRef}
+        className={styles.card}
         onClick={handleCardClick}
+        style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
       >
-        <img
-          src={currentMemory.image}
-          alt={`Kỉ niệm ${currentIndex + 1}`}
-          className={styles.image}
-        />
+        <div className={styles.cardInner}>
+          <img
+            src={currentMemory.image}
+            alt={`Kỉ niệm ${currentIndex + 1}`}
+            className={styles.image}
+            draggable="false"
+          />
+          <div className={styles.overlay} />
+          
+          <div className={styles.storyOverlay}>
+            <p className={styles.storyText}>{currentMemory.story}</p>
+          </div>
+        </div>
       </div>
 
-      {showText && (
-        <div ref={textRef} className={styles.textOverlay}>
-          <p className={styles.storyText}>{currentMemory.story}</p>
-        </div>
-      )}
-
-      <div ref={navRef} className={styles.nav}>
-        {MEMORIES.map((_, i) => (
-          <button
-            key={i}
-            className={`${styles.navDot} ${i === currentIndex ? styles.navDotActive : ''}`}
-            onClick={() => handleNavClick(i)}
-          />
-        ))}
+      <div className={styles.hint}>
+        Bấm hoặc chờ để xem tiếp
       </div>
     </div>
   )

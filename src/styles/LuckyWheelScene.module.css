@@ -47,7 +47,7 @@
 
 .subtitle {
   position: absolute;
-  top: 12%;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
   font-family: "Montserrat", sans-serif;
@@ -176,6 +176,10 @@
 }
 
 @media (max-width: 600px) {
+  .subtitle {
+    top: 18%;
+  }
+
   .pointer {
     border-left-width: 10px;
     border-right-width: 10px;

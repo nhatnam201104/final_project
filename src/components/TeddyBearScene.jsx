@@ -2,9 +2,8 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import styles from '../styles/TeddyBearScene.module.css'
 
-// Placeholder message - user can update later
 const TEDDY_MESSAGE =
-  'Cậu là người bạn tuyệt vời nhất mà tui có! Chúc cậu sinh nhật vui vẻ, luôn mạnh khỏe và gặp nhiều may mắn trong năm mới nha! 💝'
+  'Chào cậu tớ là bu, chúc cậu tuổi mới thật nhiều điều mới, cuộc sống vui vẻ và thành công nheee! 💝'
 
 export default function TeddyBearScene({ onComplete }) {
   const containerRef = useRef(null)
@@ -37,11 +36,8 @@ export default function TeddyBearScene({ onComplete }) {
     tl.to(message, { opacity: 1, y: 0, duration: 0.7 }, 1.6)
     tl.to(bear, { scale: 1.08, duration: 0.4, ease: 'power1.inOut' }, 2.5)
     tl.to(bear, { scale: 1, duration: 0.4, ease: 'power1.inOut' }, 2.9)
-    
-    // Show message longer - 8 seconds total before auto transition
     tl.to(container, { opacity: 0, duration: 0.5 }, 8)
 
-    // Floating hearts animation
     const floatHearts = () => {
       gsap.to([heart1, heart2, heart3], {
         y: 'random(-15, -30)',
@@ -52,7 +48,6 @@ export default function TeddyBearScene({ onComplete }) {
     }
     const floatTimer = setTimeout(floatHearts, 2500)
 
-    // Auto complete after 8 seconds
     const autoTimer = setTimeout(() => {
       onComplete()
     }, 8500)
@@ -67,22 +62,12 @@ export default function TeddyBearScene({ onComplete }) {
   return (
     <div ref={containerRef} className={styles.scene}>
       <div className={styles.bearContainer}>
-        <div ref={bearRef} className={styles.bear}>
-          <div className={styles.bearHead}>
-            <div className={styles.bearEarLeft} />
-            <div className={styles.bearEarRight} />
-            <div className={styles.bearFace}>
-              <div className={styles.bearEyeLeft} />
-              <div className={styles.bearEyeRight} />
-              <div className={styles.bearNose} />
-              <div className={styles.bearMouth} />
-            </div>
-          </div>
-          <div className={styles.bearBody}>
-            <div className={styles.bearArmLeft} />
-            <div className={styles.bearArmRight} />
-          </div>
-        </div>
+        <img
+          ref={bearRef}
+          className={styles.bearImage}
+          src="/images/gaubong.jpg"
+          alt="Gấu bông"
+        />
 
         <div ref={heart1Ref} className={`${styles.heart} ${styles.heart1}`}>💖</div>
         <div ref={heart2Ref} className={`${styles.heart} ${styles.heart2}`}>💕</div>

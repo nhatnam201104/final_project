@@ -18,28 +18,56 @@
   z-index: 1;
 }
 
-.contentWrap {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding: 2rem;
+.progressContainer {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(80vw, 300px);
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 10;
 }
 
-.imageWrap {
+.progressBar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #ffaa00);
+  border-radius: 2px;
+  transform-origin: left center;
+}
+
+.counter {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+  letter-spacing: 0.05em;
+}
+
+.card {
   position: relative;
-  width: min(90vw, 700px);
-  max-height: 60vh;
-  aspect-ratio: 3/4;
-  border-radius: 8px;
-  overflow: hidden;
+  width: min(85vw, 380px);
+  height: min(65vh, 520px);
   cursor: pointer;
-  flex-shrink: 0;
-  will-change: transform, opacity;
+  z-index: 2;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.cardInner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  backface-visibility: hidden;
 }
 
 .image {
@@ -47,91 +75,67 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  will-change: transform;
 }
 
-.imageOverlay {
+.overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    transparent 30%,
-    rgba(2, 4, 8, 0.6) 100%
+    transparent 20%,
+    rgba(2, 4, 8, 0.7) 100%
   );
   pointer-events: none;
 }
 
-.textOverlay {
-  width: min(90vw, 700px);
-  padding: 1.2rem 1.5rem;
-  background: rgba(2, 4, 8, 0.85);
-  border-radius: 8px;
-  text-align: center;
-  backdrop-filter: blur(8px);
-  margin-top: 1rem;
-  flex-shrink: 0;
-  will-change: opacity;
+.storyOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
 }
 
 .storyText {
   font-family: "Playfair Display", serif;
-  font-size: clamp(0.95rem, 2.5vw, 1.3rem);
-  line-height: 1.7;
-  color: #fff8ec;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  line-height: 1.6;
+  color: #fff;
   margin: 0;
-  letter-spacing: 0.02em;
-  text-shadow: 0 2px 12px rgba(255, 230, 180, 0.2);
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
-.nav {
+.hint {
   position: absolute;
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  gap: 0.75rem;
-  z-index: 3;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  z-index: 5;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-.navDot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0;
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
-.navDotActive {
-  background: rgba(255, 230, 180, 0.9);
-  transform: scale(1.4);
-  box-shadow: 0 0 12px rgba(255, 230, 180, 0.7);
-}
-
-.navDot:hover {
-  background: rgba(255, 255, 255, 0.7);
-  transform: scale(1.2);
-}
-
-@media (max-width: 600px) {
-  .imageWrap {
+@media (max-width: 480px) {
+  .card {
     width: 90vw;
-    max-height: 50vh;
+    height: 60vh;
   }
 
-  .image {
-    max-height: 50vh;
+  .storyOverlay {
+    padding: 1rem;
   }
 
-  .textOverlay {
-    width: 90vw;
-    padding: 1rem 1.2rem;
-    margin-top: 0.8rem;
-  }
-
-  .nav {
+  .hint {
     bottom: 1.5rem;
   }
 }

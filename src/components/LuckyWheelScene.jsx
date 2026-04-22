@@ -3,14 +3,14 @@ import gsap from "gsap";
 import styles from "../styles/LuckyWheelScene.module.css";
 
 const PRIZES = [
-  { text: "Bình An", emoji: "🕊️", color: "#4a9eff" },
-  { text: "Hạnh Phúc", emoji: "💖", color: "#ff6b9d" },
-  { text: "Thành Công", emoji: "🏆", color: "#ffd93d" },
-  { text: "May Mắn", emoji: "🍀", color: "#6bff8e" },
-  { text: "Tình Yêu", emoji: "💕", color: "#ff8fab" },
-  { text: "Sức Khỏe", emoji: "💪", color: "#ffaa5b" },
-  { text: "Niềm Vui", emoji: "🌟", color: "#b56bff" },
-  { text: "Ước Mơ", emoji: "✨", color: "#5bffff" },
+  { text: "Có quà", emoji: "🎁", color: "#4a9eff" },
+  { text: "Có nhiều quà", emoji: "🎉", color: "#ff6b9d" },
+  { text: "Có quà", emoji: "🎁", color: "#ffd93d" },
+  { text: "Có nhiều quà", emoji: "🎉", color: "#6bff8e" },
+  { text: "Có quà", emoji: "🎁", color: "#ff8fab" },
+  { text: "Có nhiều quà", emoji: "🎉", color: "#ffaa5b" },
+  { text: "Có quà", emoji: "🎁", color: "#b56bff" },
+  { text: "Có nhiều quà", emoji: "🎉", color: "#5bffff" },
 ];
 
 function playWinSound() {
@@ -65,15 +65,16 @@ export default function LuckyWheelScene({ onComplete }) {
     const sliceAngle = (Math.PI * 2) / PRIZES.length;
     const isMobile = window.innerWidth < 600;
     const fontSize = isMobile
-      ? Math.floor(radius * 0.13)
-      : Math.floor(radius * 0.12);
+      ? Math.floor(radius * 0.1)
+      : Math.floor(radius * 0.09);
     const emojiSize = isMobile
-      ? Math.floor(radius * 0.18)
-      : Math.floor(radius * 0.16);
+      ? Math.floor(radius * 0.15)
+      : Math.floor(radius * 0.14);
 
     PRIZES.forEach((prize, i) => {
       const startAngle = i * sliceAngle;
       const endAngle = startAngle + sliceAngle;
+      const middleAngle = startAngle + sliceAngle / 2;
 
       const gradient = ctx.createRadialGradient(
         cx,
@@ -97,28 +98,36 @@ export default function LuckyWheelScene({ onComplete }) {
       ctx.lineWidth = 2;
       ctx.stroke();
 
+      const labelRadius = radius * 0.63;
+      const labelX = cx + Math.cos(middleAngle) * labelRadius;
+      const labelY = cy + Math.sin(middleAngle) * labelRadius;
+      const textLines = prize.text.split(" ");
+      const textLineHeight = fontSize * 0.9;
+      const textBlockHeight =
+        textLines.length > 1 ? (textLines.length - 1) * textLineHeight : 0;
+
       ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(startAngle + sliceAngle / 2);
-      ctx.translate(0, -radius * 0.6);
-      ctx.rotate(Math.PI / 2);
+      ctx.translate(labelX, labelY);
+      ctx.rotate(middleAngle + Math.PI / 2);
 
       ctx.font = `${emojiSize}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(prize.emoji, 0, 0);
+      ctx.fillText(prize.emoji, 0, -emojiSize * 0.45);
 
       ctx.font = `bold ${fontSize}px Montserrat, sans-serif`;
       ctx.fillStyle = "#fff";
       ctx.shadowColor = "rgba(0,0,0,0.5)";
       ctx.shadowBlur = 4;
-      ctx.fillText(prize.text, 0, emojiSize * 0.9);
+      textLines.forEach((line, lineIndex) => {
+        const lineOffset = lineIndex * textLineHeight - textBlockHeight / 2;
+        ctx.fillText(line, 0, emojiSize * 0.55 + lineOffset);
+      });
       ctx.shadowBlur = 0;
 
       ctx.restore();
     });
 
-    // Center circle
     const centerGradient = ctx.createRadialGradient(
       cx,
       cy,
@@ -188,7 +197,6 @@ export default function LuckyWheelScene({ onComplete }) {
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
-        // Animation complete - final draw and cleanup
         wheelRotationRef.current = targetRotation;
         drawWheel(ctx, cx, cy, radius, wheelRotationRef.current);
         rafRef.current = null;
@@ -230,7 +238,6 @@ export default function LuckyWheelScene({ onComplete }) {
 
     drawWheel(ctx, cx, cy, radius, 0);
 
-    // Auto spin after 1.5 seconds
     setTimeout(() => {
       startSpin();
     }, 1500);

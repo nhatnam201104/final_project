@@ -4,7 +4,7 @@ import styles from "../styles/LetterScene.module.css";
 
 // Placeholder letter content - user can update later
 const LETTER_CONTENT =
-  "Người bạn thân yêu của tui,\n\nSinh nhật vui vẻ nha! Tui muốn nói rằng cậu là người bạn tuyệt vời nhất. Cảm ơn cậu đã luôn ở bên tui trong những lúc vui cũng như buồn.\n\nChúc cậu một năm mới tràn đầy niềm vui, sức khỏe dồi dào và gặp nhiều điều tốt lành!\n\nYêu cậu rất nhiều! 💝";
+  "Chào bạn, nhân dịp đặc biệt hôm nay, tôi có món quà nhỏ này gửi đến bạn. Chúc mừng bạn đã sống trọn vẹn và rực rỡ với những năm tháng tuổi 20. Mong rằng tuổi 21 sẽ mang đến thật nhiều điều tươi đẹp — mọi con đường bạn chọn đều thuận lợi, mỗi ngày bạn đều thấy lòng nhẹ nhàng, và luôn giữ được nụ cười rạng rỡ nheee\nPs: vui lòng liên hệ nhân viên chicc chicc để lấy món quà nhaa 💝";
 
 function playEnvelopeSound() {
   try {
@@ -134,20 +134,6 @@ export default function LetterScene({ onComplete }) {
     }, 800);
   };
 
-  const handleSkip = () => {
-    if (handled.current) return;
-    handled.current = true;
-
-    const content = letterContentRef.current;
-    if (content) {
-      content.textContent = LETTER_CONTENT;
-    }
-
-    gsap.to(containerRef.current, { opacity: 0, duration: 0.6 }).then(() => {
-      onComplete();
-    });
-  };
-
   return (
     <div ref={containerRef} className={styles.scene}>
       <h2 className={styles.title}>Một lá thư dành tặng bạn</h2>
@@ -179,12 +165,6 @@ export default function LetterScene({ onComplete }) {
         {stage === "open" && "Lá thư đang hiện ra..."}
         {stage === "reading" && "Đang đọc lời chúc..."}
       </p>
-
-      {stage === "reading" && (
-        <button className={styles.skipBtn} onClick={handleSkip}>
-          Bỏ qua
-        </button>
-      )}
     </div>
   );
 }
