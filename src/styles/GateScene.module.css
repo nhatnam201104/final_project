@@ -63,3 +63,21 @@
   pointer-events: none;
   z-index: 4;
 }
+
+@media (max-width: 640px) {
+  .portalRing {
+    width: min(78vw, 420px);
+  }
+
+  .portalCore {
+    width: min(38vw, 200px);
+  }
+
+  .gateText {
+    top: 66%;
+    width: min(92vw, 560px);
+    font-size: clamp(1.05rem, 5vw, 1.5rem);
+    line-height: 1.35;
+    padding: 0 0.4rem;
+  }
+}

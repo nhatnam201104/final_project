@@ -75,7 +75,7 @@ export default function App() {
   const SceneComponent = sceneComponents[currentScene]
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <div className="app-shell relative overflow-hidden">
       <audio ref={bgMusicRef} loop preload="auto">
         <source src="/themesong.mp3" type="audio/mp3" />
       </audio>
@@ -83,7 +83,7 @@ export default function App() {
       {view === 'register' ? (
         <RegisterPage onComplete={handleRegisterComplete} />
       ) : (
-        <div className="relative h-full w-full">
+        <div className="relative h-full w-full overflow-hidden">
           {SceneComponent && (
             <SceneComponent onComplete={handleSceneComplete} />
           )}
@@ -92,7 +92,7 @@ export default function App() {
 
       <div
         ref={fadeRef}
-        className="pointer-events-none fixed inset-0 z-[100] bg-black opacity-0"
+        className="pointer-events-none fixed inset-0 z-100 bg-black opacity-0"
       />
 
       {showAudio && <AudioControls />}

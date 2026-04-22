@@ -22,9 +22,26 @@ html, body {
   background: var(--bg-deep);
   font-family: "Montserrat", sans-serif;
   color: #fff;
+  -webkit-text-size-adjust: 100%;
 }
 
 #root {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100svh;
+  min-height: -webkit-fill-available;
+}
+
+.app-shell {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 100svh;
+  min-height: -webkit-fill-available;
+}
+
+@supports not (height: 100dvh) {
+  #root,
+  .app-shell {
+    height: 100vh;
+  }
 }

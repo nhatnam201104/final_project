@@ -28,12 +28,22 @@
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   color: rgba(255, 255, 255, 0.75);
-  white-space: nowrap;
+  width: min(92vw, 620px);
+  white-space: normal;
 }
 
 @media (min-width: 640px) {
   .topText {
     top: 2.5rem;
     font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .topText {
+    top: calc(1rem + env(safe-area-inset-top));
+    padding: 0 1rem;
+    letter-spacing: 0.16em;
+    font-size: 0.62rem;
   }
 }

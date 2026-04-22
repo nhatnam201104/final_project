@@ -76,7 +76,7 @@
   .scene {
     flex-direction: column;
     gap: 1.5rem;
-    padding: 1.5rem;
+    padding: calc(1rem + env(safe-area-inset-top)) 1rem calc(1rem + env(safe-area-inset-bottom));
   }
 
   .bearContainer {
@@ -93,5 +93,17 @@
     width: 90vw;
     padding: 1.5rem;
     border-radius: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .messageCard {
+    width: 92vw;
+    padding: 1.1rem 1rem;
+  }
+
+  .messageText {
+    line-height: 1.65;
+    font-size: 0.95rem;
   }
 }

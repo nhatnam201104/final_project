@@ -12,7 +12,7 @@
 
 .title {
   position: absolute;
-  top: 4%;
+  top: calc(3% + env(safe-area-inset-top));
   font-family: "Great Vibes", cursive;
   font-size: clamp(1.8rem, 5vw, 3.5rem);
   color: #5c3d2e;
@@ -126,11 +126,13 @@
   white-space: pre-line;
   width: 100%;
   padding: 0.5rem;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .hint {
   position: absolute;
-  bottom: 4%;
+  bottom: calc(3.5% + env(safe-area-inset-bottom));
   font-family: "Montserrat", sans-serif;
   font-size: clamp(0.7rem, 1.8vw, 0.85rem);
   color: #8b7355;
@@ -169,13 +171,21 @@
 @media (max-width: 600px) {
   .envelope {
     width: 88vw;
+    max-height: min(64dvh, 420px);
   }
 
   .letter {
-    padding: 1rem;
+    padding: 0.9rem;
   }
 
   .letterText {
-    font-size: 0.75rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .hint {
+    font-size: 0.72rem;
+    text-align: center;
+    width: 90vw;
   }
 }
