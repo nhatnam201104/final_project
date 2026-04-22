@@ -27,14 +27,32 @@ const MEMORIES = [
 
 const AUTO_ADVANCE_DELAY = 5000
 
+// Preload all images on mount
+const preloadImages = (images) => {
+  return Promise.all(
+    images.map(
+      (src) =>
+        new Promise((resolve) => {
+          const img = new Image()
+          img.onload = () => resolve(src)
+          img.onerror = () => resolve(src)
+          img.src = src
+        })
+    )
+  )
+}
+
 export default function GalleryScene({ onComplete }) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isReady, setIsReady] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
   const containerRef = useRef(null)
   const cardRef = useRef(null)
   const canvasRef = useRef(null)
   const canvasRaf = useRef(null)
   const autoTimerRef = useRef(null)
   const progressRef = useRef(null)
+  const prevIndexRef = useRef(0)
 
   const drawBokeh = useCallback((ctx, width, height) => {
     for (let i = 0; i < 15; i++) {
@@ -111,14 +129,18 @@ export default function GalleryScene({ onComplete }) {
   }, [])
 
   const goToNext = useCallback(() => {
+    if (isAnimating || !isReady) return
+    
     const card = cardRef.current
     const progress = progressRef.current
     
     if (currentIndex >= MEMORIES.length - 1) {
+      clearAutoTimer()
       if (onComplete) onComplete()
       return
     }
 
+    setIsAnimating(true)
     clearAutoTimer()
 
     // Reset progress bar
@@ -134,9 +156,11 @@ export default function GalleryScene({ onComplete }) {
       duration: 0.5,
       ease: 'power2.in',
       onComplete: () => {
+        prevIndexRef.current = currentIndex
         setCurrentIndex(prev => prev + 1)
+        setIsAnimating(false)
         
-        // Reset card position
+        // Reset card position instantly
         gsap.set(card, { rotateY: -90, scale: 0.95, opacity: 0 })
         
         // Flip in animation
@@ -149,9 +173,19 @@ export default function GalleryScene({ onComplete }) {
         })
       }
     })
-  }, [currentIndex, onComplete, clearAutoTimer])
+  }, [currentIndex, onComplete, clearAutoTimer, isAnimating, isReady])
 
   useEffect(() => {
+    // Preload all images first
+    const images = MEMORIES.map(m => m.image)
+    preloadImages(images).then(() => {
+      setIsReady(true)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!isReady) return
+    
     const container = containerRef.current
     const progress = progressRef.current
     
@@ -179,12 +213,14 @@ export default function GalleryScene({ onComplete }) {
       stopCanvas()
       clearAutoTimer()
     }
-  }, [currentIndex, runCanvasEffect, stopCanvas, clearAutoTimer, goToNext])
+  }, [currentIndex, runCanvasEffect, stopCanvas, clearAutoTimer, goToNext, isReady])
 
   const handleCardClick = useCallback(() => {
-    clearAutoTimer()
-    goToNext()
-  }, [goToNext, clearAutoTimer])
+    if (!isAnimating && isReady) {
+      clearAutoTimer()
+      goToNext()
+    }
+  }, [goToNext, clearAutoTimer, isAnimating, isReady])
 
   const currentMemory = MEMORIES[currentIndex]
 
@@ -202,7 +238,7 @@ export default function GalleryScene({ onComplete }) {
       
       <div 
         ref={cardRef}
-        className={styles.card}
+        className={`${styles.card} ${!isReady ? styles.cardLoading : ''}`}
         onClick={handleCardClick}
         style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
       >
@@ -222,7 +258,7 @@ export default function GalleryScene({ onComplete }) {
       </div>
 
       <div className={styles.hint}>
-        Bấm hoặc chờ để xem tiếp
+        {isReady ? 'Bấm hoặc chờ để xem tiếp' : 'Đang tải...'}
       </div>
     </div>
   )
