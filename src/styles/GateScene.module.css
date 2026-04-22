@@ -1,0 +1,65 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, #0d1224 0%, #04060f 70%, #010207 100%);
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.portalWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.portalRing {
+  width: min(64vw, 640px);
+  aspect-ratio: 1 / 1;
+  border-radius: 9999px;
+  border: 2px solid rgba(243, 207, 139, 0.85);
+  box-shadow: 0 0 34px rgba(243, 207, 139, 0.65), inset 0 0 26px rgba(255, 235, 190, 0.5);
+}
+
+.portalCore {
+  position: absolute;
+  width: min(28vw, 290px);
+  aspect-ratio: 1 / 1;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 243, 213, 0.98) 0%, rgba(255, 218, 149, 0.58) 36%, rgba(255, 214, 140, 0.02) 72%);
+  filter: blur(0.5px);
+}
+
+.gateText {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translateX(-50%);
+  width: min(90vw, 900px);
+  text-align: center;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.25rem, 3.4vw, 3rem);
+  letter-spacing: 0.02em;
+  background: linear-gradient(110deg, #fff 0%, #ffe9bc 32%, #fff 62%, #fff4db 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 22px rgba(255, 230, 165, 0.32);
+  z-index: 3;
+}
+
+.gateFlash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 241, 212, 0.72), transparent 54%);
+  pointer-events: none;
+  z-index: 4;
+}

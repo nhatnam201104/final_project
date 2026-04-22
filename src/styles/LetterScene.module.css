@@ -1,0 +1,181 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #e8d5b7 0%, #d4c4a8 50%, #c9b896 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1000px;
+}
+
+.title {
+  position: absolute;
+  top: 5%;
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: #5c3d2e;
+  text-shadow: 0 2px 8px rgba(92, 61, 46, 0.2);
+  margin: 0;
+  z-index: 5;
+}
+
+.envelope {
+  position: relative;
+  width: min(85vw, 400px);
+  aspect-ratio: 1.4 / 1;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+
+.envelopeBody {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #f5e6c8 0%, #e8d5b7 100%);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(92, 61, 46, 0.25), 0 2px 8px rgba(92, 61, 46, 0.15);
+  border: 1px solid rgba(200, 180, 140, 0.5);
+}
+
+.envelopeShadow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, rgba(92, 61, 46, 0.08));
+  border-radius: 0 0 8px 8px;
+}
+
+.envelopeFlap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, #f0ddb8 0%, #e4cb9e 100%);
+  border-radius: 8px 8px 0 0;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  box-shadow: 0 -2px 8px rgba(92, 61, 46, 0.1);
+}
+
+.envelopeFlap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(92, 61, 46, 0.2), transparent);
+}
+
+.envelopeOpen .envelopeFlap {
+  transform: rotateX(-170deg);
+}
+
+.letter {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+  bottom: 5%;
+  background: #fffef5;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(92, 61, 46, 0.15);
+  padding: 1rem;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.letterContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.letterDecorTop,
+.letterDecorBottom {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  opacity: 0.6;
+}
+
+.letterDecorTop {
+  margin-bottom: 0.5rem;
+}
+
+.letterDecorBottom {
+  margin-top: auto;
+}
+
+.letterText {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  line-height: 1.6;
+  color: #3d2b1f;
+  text-align: center;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: pre-line;
+  overflow: auto;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.hint {
+  position: absolute;
+  bottom: 6%;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  color: #8b7355;
+  margin: 0;
+  letter-spacing: 0.05em;
+  animation: hintPulse 2s ease-in-out infinite;
+  z-index: 5;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.skipBtn {
+  position: absolute;
+  bottom: 3%;
+  right: 5%;
+  padding: 0.6rem 1.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.85rem;
+  color: #8b7355;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 115, 85, 0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 5;
+}
+
+.skipBtn:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 2px 10px rgba(92, 61, 46, 0.15);
+}
+
+@media (max-width: 600px) {
+  .envelope {
+    width: 90vw;
+  }
+
+  .letter {
+    padding: 0.75rem;
+  }
+
+  .letterText {
+    font-size: 0.7rem;
+  }
+}

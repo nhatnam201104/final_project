@@ -1,0 +1,42 @@
+.controls {
+  position: fixed;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(2, 6, 18, 0.6);
+  backdrop-filter: blur(8px);
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: opacity 0.3s;
+}
+
+.btn {
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  padding: 0.2rem 0.5rem;
+  color: white;
+  cursor: pointer;
+  font-size: 0.65rem;
+}
+
+.slider {
+  width: 4rem;
+  height: 3px;
+  accent-color: #fde68a;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .label { display: none; }
+  .controls { right: 0.5rem; bottom: 0.5rem; }
+}

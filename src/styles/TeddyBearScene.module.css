@@ -1,0 +1,196 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #2d1b4e 0%, #1a0f2e 50%, #0d0818 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bearContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.bear {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bearHead {
+  position: relative;
+  width: clamp(120px, 28vw, 200px);
+  height: clamp(110px, 25vw, 180px);
+  background: radial-gradient(circle at 50% 40%, #c68b59 0%, #a0714a 60%, #8b5e3c 100%);
+  border-radius: 50% 50% 45% 45%;
+}
+
+.bearEarLeft,
+.bearEarRight {
+  position: absolute;
+  top: -8%;
+  width: 28%;
+  aspect-ratio: 1 / 1;
+  background: radial-gradient(circle at 50% 40%, #c68b59 0%, #a0714a 60%, #8b5e3c 100%);
+  border-radius: 50%;
+}
+
+.bearEarLeft { left: 4%; }
+.bearEarRight { right: 4%; }
+
+.bearEarLeft::after,
+.bearEarRight::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 40%;
+  aspect-ratio: 1 / 1;
+  background: #d4a574;
+  border-radius: 50%;
+}
+
+.bearFace {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 50%;
+}
+
+.bearEyeLeft,
+.bearEyeRight {
+  position: absolute;
+  top: 20%;
+  width: 18%;
+  aspect-ratio: 1 / 1.2;
+  background: #1a1a2e;
+  border-radius: 50%;
+}
+
+.bearEyeLeft { left: 18%; }
+.bearEyeRight { right: 18%; }
+
+.bearEyeLeft::after,
+.bearEyeRight::after {
+  content: '';
+  position: absolute;
+  top: 22%;
+  left: 28%;
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+.bearNose {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
+  aspect-ratio: 1.5 / 1;
+  background: #5c3d2e;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+}
+
+.bearMouth {
+  position: absolute;
+  top: 72%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 25%;
+  height: 15%;
+  border: 3px solid #5c3d2e;
+  border-top: none;
+  border-radius: 0 0 50% 50%;
+}
+
+.bearBody {
+  position: relative;
+  margin-top: -8%;
+  width: clamp(100px, 22vw, 160px);
+  height: clamp(80px, 18vw, 130px);
+  background: radial-gradient(circle at 50% 30%, #c68b59 0%, #a0714a 60%, #8b5e3c 100%);
+  border-radius: 40% 40% 45% 45%;
+}
+
+.bearArmLeft,
+.bearArmRight {
+  position: absolute;
+  top: 15%;
+  width: 22%;
+  aspect-ratio: 1 / 1.4;
+  background: radial-gradient(circle at 50% 40%, #c68b59 0%, #a0714a 60%, #8b5e3c 100%);
+  border-radius: 40%;
+}
+
+.bearArmLeft {
+  left: -12%;
+  transform: rotate(25deg);
+}
+
+.bearArmRight {
+  right: -12%;
+  transform: rotate(-25deg);
+}
+
+.heart {
+  position: absolute;
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.heart1 {
+  top: -15%;
+  left: -20%;
+}
+
+.heart2 {
+  top: -10%;
+  right: -25%;
+}
+
+.heart3 {
+  bottom: -5%;
+  left: -30%;
+}
+
+.messageCard {
+  width: min(90vw, 600px);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 60px rgba(255, 150, 180, 0.2);
+}
+
+.messageText {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  line-height: 1.8;
+  color: #2d1b4e;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 600px) {
+  .bearContainer {
+    margin-bottom: 1.5rem;
+  }
+
+  .messageCard {
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin: 0 1rem;
+  }
+}

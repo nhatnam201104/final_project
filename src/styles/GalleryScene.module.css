@@ -1,0 +1,137 @@
+.scene {
+  position: absolute;
+  inset: 0;
+  background: #020408;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contentWrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+.imageWrap {
+  position: relative;
+  width: min(90vw, 700px);
+  max-height: 60vh;
+  aspect-ratio: 3/4;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 30%,
+    rgba(2, 4, 8, 0.6) 100%
+  );
+  pointer-events: none;
+}
+
+.textOverlay {
+  width: min(90vw, 700px);
+  padding: 1.2rem 1.5rem;
+  background: rgba(2, 4, 8, 0.85);
+  border-radius: 8px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  margin-top: 1rem;
+  flex-shrink: 0;
+}
+
+.storyText {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(0.95rem, 2.5vw, 1.3rem);
+  line-height: 1.7;
+  color: #fff8ec;
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 12px rgba(255, 230, 180, 0.2);
+}
+
+.nav {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.75rem;
+  z-index: 3;
+}
+
+.navDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.navDotActive {
+  background: rgba(255, 230, 180, 0.9);
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(255, 230, 180, 0.6);
+}
+
+.navDot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 600px) {
+  .imageWrap {
+    width: 90vw;
+    max-height: 45vh;
+  }
+
+  .image {
+    max-height: 45vh;
+  }
+
+  .textOverlay {
+    width: 90vw;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .nav {
+    bottom: 1rem;
+  }
+
+  .clickHint {
+    font-size: 0.7rem;
+  }
+}
