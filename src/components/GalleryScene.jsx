@@ -46,13 +46,14 @@ export default function GalleryScene({ onComplete }) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isReady, setIsReady] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [showSkeleton, setShowSkeleton] = useState(true)
   const containerRef = useRef(null)
   const cardRef = useRef(null)
   const canvasRef = useRef(null)
   const canvasRaf = useRef(null)
   const autoTimerRef = useRef(null)
   const progressRef = useRef(null)
-  const prevIndexRef = useRef(0)
+  const imageRef = useRef(null)
 
   const drawBokeh = useCallback((ctx, width, height) => {
     for (let i = 0; i < 15; i++) {
@@ -156,7 +157,7 @@ export default function GalleryScene({ onComplete }) {
       duration: 0.5,
       ease: 'power2.in',
       onComplete: () => {
-        prevIndexRef.current = currentIndex
+        setShowSkeleton(true)
         setCurrentIndex(prev => prev + 1)
         setIsAnimating(false)
         
@@ -222,6 +223,10 @@ export default function GalleryScene({ onComplete }) {
     }
   }, [goToNext, clearAutoTimer, isAnimating, isReady])
 
+  const handleImageLoad = useCallback(() => {
+    setShowSkeleton(false)
+  }, [])
+
   const currentMemory = MEMORIES[currentIndex]
 
   return (
@@ -243,12 +248,20 @@ export default function GalleryScene({ onComplete }) {
         style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
       >
         <div className={styles.cardInner}>
+          {/* Skeleton loader */}
+          {showSkeleton && (
+            <div className={styles.skeleton} />
+          )}
+          
           <img
+            ref={imageRef}
             src={currentMemory.image}
             alt={`Kỉ niệm ${currentIndex + 1}`}
-            className={styles.image}
+            className={`${styles.image} ${!showSkeleton ? styles.imageLoaded : ''}`}
             draggable="false"
+            onLoad={handleImageLoad}
           />
+          
           <div className={styles.overlay} />
           
           <div className={styles.storyOverlay}>
