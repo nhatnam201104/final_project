@@ -1,0 +1,226 @@
+.wheelSection {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #e8f4fd 0%, #F8dae9 50%, #fce4ec 100%);
+  padding: 80px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.wheelSection .heading,
+.wheelSection .subheading,
+.wheelSection .wheelWrapper,
+.wheelSection .spinBtn {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wheelSection.visible .heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wheelSection.visible .subheading {
+  opacity: 0.7;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.wheelSection.visible .wheelWrapper {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.wheelSection.visible .spinBtn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s;
+}
+
+.heading {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.8rem;
+  color: #c2185b;
+  margin-bottom: 8px;
+}
+
+.subheading {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #880e4f;
+  margin-bottom: 40px;
+}
+
+.wheelWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.pointer {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 32px solid #0f1117;
+  z-index: 10;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+.wheelCanvas {
+  border-radius: 50%;
+  box-shadow: 0 0 0 8px #0f1117, 0 0 0 12px rgba(248, 218, 233, 0.5), 0 8px 30px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.4s ease;
+}
+
+.wheelCanvas:hover {
+  box-shadow: 0 0 0 8px #0f1117, 0 0 0 12px rgba(248, 218, 233, 0.8), 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.spinBtn {
+  background: linear-gradient(135deg, #c2185b, #e91e63);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(194, 24, 91, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.spinBtn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.spinBtn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.spinBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(194, 24, 91, 0.4);
+}
+
+.spinBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.spinBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.resultOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.resultCard {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.resultEmoji {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  animation: resultBounce 0.6s ease 0.3s;
+}
+
+@keyframes resultBounce {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.3); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.resultText {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.resultText strong {
+  color: #c2185b;
+  font-size: 1.7rem;
+}
+
+.closeBtn {
+  background: linear-gradient(135deg, #F8dae9, #b9d6f3);
+  color: #880e4f;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: transform 0.2s;
+}
+
+.closeBtn:hover {
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 2.2rem;
+  }
+  .spinBtn {
+    padding: 12px 32px;
+    font-size: 1rem;
+  }
+}
