@@ -39,6 +39,7 @@
   overflow: hidden;
   cursor: pointer;
   flex-shrink: 0;
+  will-change: transform, opacity;
 }
 
 .image {
@@ -46,6 +47,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  will-change: transform;
 }
 
 .imageOverlay {
@@ -68,6 +70,7 @@
   backdrop-filter: blur(8px);
   margin-top: 1rem;
   flex-shrink: 0;
+  will-change: opacity;
 }
 
 .storyText {
@@ -97,41 +100,38 @@
   background: rgba(255, 255, 255, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
 }
 
 .navDotActive {
   background: rgba(255, 230, 180, 0.9);
-  transform: scale(1.3);
-  box-shadow: 0 0 10px rgba(255, 230, 180, 0.6);
+  transform: scale(1.4);
+  box-shadow: 0 0 12px rgba(255, 230, 180, 0.7);
 }
 
 .navDot:hover {
   background: rgba(255, 255, 255, 0.7);
+  transform: scale(1.2);
 }
 
 @media (max-width: 600px) {
   .imageWrap {
     width: 90vw;
-    max-height: 45vh;
+    max-height: 50vh;
   }
 
   .image {
-    max-height: 45vh;
+    max-height: 50vh;
   }
 
   .textOverlay {
     width: 90vw;
-    padding: 1.2rem 1.5rem;
-    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    margin-top: 0.8rem;
   }
 
   .nav {
-    bottom: 1rem;
-  }
-
-  .clickHint {
-    font-size: 0.7rem;
+    bottom: 1.5rem;
   }
 }

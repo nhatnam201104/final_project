@@ -19,7 +19,8 @@
 
 .topText {
   position: absolute;
-  inset-x: 0;
+  left: 50%;
+  transform: translateX(-50%);
   top: 2rem;
   z-index: 20;
   padding: 0 1.5rem;
@@ -27,6 +28,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
 }
 
 @media (min-width: 640px) {

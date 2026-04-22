@@ -38,8 +38,6 @@ export default function GalleryScene({ onComplete }) {
   const autoTimerRef = useRef(null)
   const canvasRaf = useRef(null)
   const isTransitioning = useRef(false)
-  
-  // Use ref to store goToCard function for recursive calls
   const goToCardRef = useRef(null)
 
   const drawBokeh = useCallback((ctx, width, height) => {
@@ -116,7 +114,7 @@ export default function GalleryScene({ onComplete }) {
     }
   }, [])
 
-  // Go to specific card with animation - defined as regular function to use ref
+  // Smooth transition animation using cubic-bezier easing
   const goToCard = useCallback((newIndex) => {
     if (isTransitioning.current) return
     if (newIndex < 0 || newIndex >= MEMORIES.length) return
@@ -127,35 +125,49 @@ export default function GalleryScene({ onComplete }) {
     const imageWrap = imageWrapRef.current
     const text = textRef.current
 
-    // Fade out current content
+    // Smooth fade out with elegant easing
     gsap.to(imageWrap, {
       opacity: 0,
-      scale: 1.08,
-      duration: 0.4,
-      ease: 'power2.in',
+      scale: 1.05,
+      duration: 0.5,
+      ease: 'power3.in',
     })
     
     if (text) {
-      gsap.to(text, { opacity: 0, duration: 0.2 })
+      gsap.to(text, { 
+        opacity: 0, 
+        duration: 0.3,
+        ease: 'power2.out' 
+      })
     }
 
-    // After fade out, update and fade in
+    // After fade out, update and fade in with smooth animation
     setTimeout(() => {
       stopCanvas()
       setCurrentIndex(newIndex)
       setShowText(false)
       
-      // Reset and animate image in
-      gsap.set(imageWrap, { scale: 0.92 })
-      gsap.to(imageWrap, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' })
+      // Reset and smooth fade in
+      gsap.set(imageWrap, { scale: 0.95 })
+      gsap.to(imageWrap, { 
+        opacity: 1, 
+        scale: 1, 
+        duration: 0.6, 
+        ease: 'power3.out' 
+      })
       
       // Start canvas effect
       runCanvasEffect(MEMORIES[newIndex])
       
-      // Reset and animate text
+      // Smooth text fade in (no y translation)
       if (text) {
-        gsap.set(text, { opacity: 0, y: 20 })
-        gsap.to(text, { opacity: 1, y: 0, duration: 0.5, delay: 0.3, ease: 'power2.out' })
+        gsap.set(text, { opacity: 0 })
+        gsap.to(text, { 
+          opacity: 1, 
+          duration: 0.5, 
+          delay: 0.25, 
+          ease: 'power2.out' 
+        })
       }
 
       // After animation completes, set showText and schedule next or complete
@@ -164,23 +176,20 @@ export default function GalleryScene({ onComplete }) {
         isTransitioning.current = false
         
         if (newIndex < MEMORIES.length - 1) {
-          // Not the last card - auto advance
           autoTimerRef.current = setTimeout(() => {
             if (goToCardRef.current) {
               goToCardRef.current(newIndex + 1)
             }
           }, AUTO_ADVANCE_DELAY)
         } else {
-          // Last card - complete after delay
           setTimeout(() => {
             if (onComplete) onComplete()
           }, AUTO_ADVANCE_DELAY)
         }
       }, 500)
-    }, 400)
+    }, 450)
   }, [clearAutoTimer, stopCanvas, runCanvasEffect, onComplete])
 
-  // Store goToCard in ref for recursive calls
   useEffect(() => {
     goToCardRef.current = goToCard
   }, [goToCard])
@@ -206,22 +215,28 @@ export default function GalleryScene({ onComplete }) {
     const imageWrap = imageWrapRef.current
     const nav = navRef.current
 
-    // Fade in container
+    // Elegant fade in
     gsap.set(container, { opacity: 0 })
-    gsap.to(container, { opacity: 1, duration: 0.6 })
+    gsap.to(container, { opacity: 1, duration: 0.6, ease: 'power2.out' })
 
-    // Fade in image
-    gsap.set(imageWrap, { scale: 0.92, opacity: 0 })
-    gsap.to(imageWrap, { scale: 1, opacity: 1, duration: 0.7, delay: 0.2, ease: 'power2.out' })
+    // Smooth image entrance
+    gsap.set(imageWrap, { scale: 0.9, opacity: 0 })
+    gsap.to(imageWrap, { 
+      scale: 1, 
+      opacity: 1, 
+      duration: 0.8, 
+      delay: 0.2, 
+      ease: 'power3.out' 
+    })
 
     // Start canvas effect
     runCanvasEffect(MEMORIES[0])
 
-    // Fade in nav
+    // Smooth nav fade in
     gsap.set(nav, { opacity: 0 })
-    gsap.to(nav, { opacity: 1, duration: 0.5, delay: 0.6 })
+    gsap.to(nav, { opacity: 1, duration: 0.5, delay: 0.6, ease: 'power2.out' })
 
-    // Show text and start auto-advance after initial delay
+    // Show text and start auto-advance
     setTimeout(() => {
       setShowText(true)
       autoTimerRef.current = setTimeout(() => {
@@ -229,7 +244,7 @@ export default function GalleryScene({ onComplete }) {
           goToCardRef.current(1)
         }
       }, AUTO_ADVANCE_DELAY)
-    }, 1200)
+    }, 1400)
 
     return () => {
       stopCanvas()

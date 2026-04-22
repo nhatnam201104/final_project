@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
 import { useCanvasAnimation } from "../hooks/useCanvasAnimation";

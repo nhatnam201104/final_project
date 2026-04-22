@@ -26,7 +26,22 @@ export default function App() {
   const [view, setView] = useState('register')
   const [sceneIndex, setSceneIndex] = useState(0)
   const fadeRef = useRef(null)
+  const bgMusicRef = useRef(null)
   const [showAudio, setShowAudio] = useState(false)
+
+  // Background music that plays across scenes
+  useEffect(() => {
+    const audio = bgMusicRef.current
+    if (audio && view === 'birthday') {
+      audio.volume = 0.5
+      audio.play().catch(() => {})
+    }
+    return () => {
+      if (audio) {
+        audio.pause()
+      }
+    }
+  }, [view])
 
   const transitionTo = useCallback(async (nextSceneIndex) => {
     if (nextSceneIndex < 0 || nextSceneIndex >= SCENE_ORDER.length) return
@@ -61,6 +76,10 @@ export default function App() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
+      <audio ref={bgMusicRef} loop preload="auto">
+        <source src="/themesong.mp3" type="audio/mp3" />
+      </audio>
+      
       {view === 'register' ? (
         <RegisterPage onComplete={handleRegisterComplete} />
       ) : (

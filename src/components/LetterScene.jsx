@@ -105,6 +105,7 @@ export default function LetterScene({ onComplete }) {
       gsap.to(letter, {
         y: -80,
         opacity: 1,
+        scale: 1,
         duration: 0.8,
         ease: "back.out(1.4)",
       });
